@@ -1,107 +1,130 @@
-import { useState } from "react";
 import "../src/index.css";
-import List from "./List";
-const user = {
-  name: "Hedy Lamarr",
-  imageUrl: "https://i.imgur.com/yXOvdOSs.jpg",
-  imageSize: 90,
-};
-
-function Portfile() {
+import { useState } from "react";
+function Square({ value, onSquareClick }) {
   return (
-    <>
-      <h1>{user.name}</h1>
-      <img
-        src={user.imageUrl}
-        alt="image"
-        style={{
-          width: user.imageSize,
-          height: user.imageSize,
-        }}
-      />
-    </>
+    <button className="square" onClick={onSquareClick}>
+      {value}
+    </button>
   );
 }
 
-//conditional rendering
+export default function Board() {
+  const [xisNext, setIsNext] = useState(true);
+  const [square, setSquare] = useState(Array(9).fill(null));
 
-function Usergreeting(props) {
-  // if (props.isloggedin) {
-  //   return <h1>Hello you are logged in and your name is {props.username}</h1>;
-  // }
+  function handleClick(i) {
 
-  // return <h2>You are logged out please logged in {props.username}</h2>;
-  //-----------------------------------------------//
-  return props.isloggedin ? (
-    <h1 className="welcome-message">welcome {props.username}</h1>
-  ) : (
-    <h2 className="loginplease">please logged in </h2>
-  );
-}
+    if(square[i]||calculateWinner(square)){
+      return;
+    }
+    const nextsquares = square.slice();
 
-// rendereing list
+   
+    if(square[i]) return;
+   
+    if (xisNext) {
+      nextsquares[i] = "X";
+    } else {
+      nextsquares[i] = "O";
+    }
 
-function ListItemProduct() {
-  const product = [
-    { title: "Cabbage", isFruit: false, id: 1 },
-    { title: "Garlic", isFruit: false, id: 2 },
-    { title: "Apple", isFruit: true, id: 3 },
-  ];
-
-  const listItems = product.map((p) => {
-    return (
-      <li
-        key={p.id}
-        style={{
-          color: p.isFruit ? "magenta" : "darkgreen",
-        }}
-      >
-        {p.title}
-      </li>
-    );
-  });
-
-  return <ul>{listItems}</ul>;
-}
-//app function
-
-//use state
-
-//click event
-
-function Mybutton(props) {
-  return (
-    <>
-      <h1>Clicked {props.count}</h1>
-      <button onClick={props.onClick}>Click</button>
-    </>
-  );
-}
-
-function App() {
-  const [count, setCount] = useState(0);
-  function handleClick() {
-    setCount(count + 1);
+    setSquare(nextsquares);
+    setIsNext(!xisNext);
   }
 
+  const winner=calculateWinner(square);
+  let status;
+  if(winner){
+    status=' winner '+winner;
+
+  }
+  else{
+    status="Next Player " + (xisNext?"X":'O');
+  }
   return (
     <>
-      <Portfile />
+    <div className="status">{status}</div>
+      <div className="board-view">
+        <Square value={square[0]} onSquareClick={() => handleClick(0)} />
+        <Square
+          value={square[1]}
+          onSquareClick={() => {
+            handleClick(1);
+          }}
+        />
+        <Square
+          value={square[2]}
+          onSquareClick={() => {
+            handleClick(2);
+          }}
+        />
+      </div>
 
-      <Usergreeting isloggedin={true} username="emon" />
+      <div className="board-view">
+        <Square
+          value={square[3]}
+          onSquareClick={() => {
+            handleClick(3);
+          }}
+        />
+        <Square
+          value={square[4]}
+          onSquareClick={() => {
+            handleClick(4);
+          }}
+        />
+        <Square
+          value={square[5]}
+          onSquareClick={() => {
+            handleClick(5);
+          }}
+        />
+      </div>
 
-      {/* loop */}
-      <ListItemProduct />
-
-      <br />
-      <List productname="catagory"></List>
-
-      {/* button click */}
-      <Mybutton count={count} onClick={handleClick} />
-
-      <Mybutton count={count} onClick={handleClick} />
+      <div className="board-view">
+        <Square
+          value={square[6]}
+          onSquareClick={() => {
+            handleClick(6);
+          }}
+        />
+        <Square
+          value={square[7]}
+          onSquareClick={() => {
+            handleClick(7);
+          }}
+        />
+        <Square
+          value={square[8]}
+          onSquareClick={() => {
+            handleClick(8);
+          }}
+        />
+      </div>
     </>
   );
 }
 
-export default App;
+
+function calculateWinner(square){
+
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for(let i=0;i<lines.length;i++){
+
+    const [a,b,c]=lines[i];
+    if(square[a]&&square[a]===square[b] &&square[a]===square[c]){
+      return square[a];
+    }
+}
+return null;
+}
