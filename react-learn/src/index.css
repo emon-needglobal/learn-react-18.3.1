@@ -18,3 +18,18 @@
     display: inline;
 
 }
+
+.product-name{
+
+    font-size:large;
+    text-align: center;
+    border: 2px solid red;
+    background-color: aliceblue
+
+}
+.list-item{
+text-align: center;
+border: 1px solid black;
+list-style-type: none;
+
+}

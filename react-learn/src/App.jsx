@@ -1,4 +1,6 @@
+import { useState } from "react";
 import "../src/index.css";
+import List from "./List";
 const user = {
   name: "Hedy Lamarr",
   imageUrl: "https://i.imgur.com/yXOvdOSs.jpg",
@@ -20,17 +22,7 @@ function Portfile() {
     </>
   );
 }
-function MyButton() {
-  return (
-    <>
-      <button
-        style={{ display: "block", marginTop: "10px", marginBottom: "33px" }}
-      >
-        i am a buton
-      </button>
-    </>
-  );
-}
+
 //conditional rendering
 
 function Usergreeting(props) {
@@ -72,16 +64,42 @@ function ListItemProduct() {
   return <ul>{listItems}</ul>;
 }
 //app function
+
+//use state
+
+//click event
+
+function Mybutton(props) {
+  return (
+    <>
+      <h1>Clicked {props.count}</h1>
+      <button onClick={props.onClick}>Click</button>
+    </>
+  );
+}
+
 function App() {
+  const [count, setCount] = useState(0);
+  function handleClick() {
+    setCount(count + 1);
+  }
+
   return (
     <>
       <Portfile />
-      <MyButton />
 
       <Usergreeting isloggedin={true} username="emon" />
 
       {/* loop */}
       <ListItemProduct />
+
+      <br />
+      <List productname="catagory"></List>
+
+      {/* button click */}
+      <Mybutton count={count} onClick={handleClick} />
+
+      <Mybutton count={count} onClick={handleClick} />
     </>
   );
 }
