@@ -1,4 +1,5 @@
 import "../src/index.css";
+import Emon from "./Emon";
 import { useState } from "react";
 function Square({ value, onSquareClick }) {
   return (
@@ -101,6 +102,8 @@ export default function Board() {
           }}
         />
       </div>
+
+      <Emon/>
     </>
   );
 }
